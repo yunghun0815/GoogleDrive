@@ -1,0 +1,113 @@
+@charset "EUC-KR";
+.fileList:hover{
+	background-color: var(--dt-primary-container,rgb(232,240,254));
+}
+.dir-img{
+	width: 20px;	
+}
+.nav-path{
+	padding-left: 30px;
+	border-bottom: 1px solid #dadce0;
+    padding-bottom: 15px;
+}
+.nav-path .nav-title{
+	font-size: 20px;
+	font-weight: bold;
+}
+.before-a img{
+	position: relative;
+	top:4px;
+}
+.before-a span{
+    font-size: 20px;
+    font-weight: 500;
+}
+#myDrive-table{
+	width: 100%;
+}
+#myDrive-table tr{
+	height: 50px;	
+    border-bottom: 1px solid #dadce0;
+}
+#myDrive-table tr td, #myDrive-table tr th{
+	text-align: center;
+}
+#myDrive-table tr td:first-child, #myDrive-table tr th:first-child {
+	padding-left: 10px;
+	text-align: left;
+	width: 40%;
+}
+#myDrive-table tr th:first-child{
+	padding-left: 30px;	
+}
+#myDrive-table tr td:nth-child(2) {
+	width: 20%;
+}
+#myDrive-table tr td:nth-child(3) {
+	width: 20%;
+}
+#myDrive-table tr td:nth-child(4) {
+	width: 10%;
+}
+#myDrive-table img{
+    position: relative;
+    top: 4px;
+}
+#myDrive-table .dir-img{
+	margin-left: 5px;	
+}
+#myDrive-table .star{
+		width: 14px;
+		top: 1px;
+		cursor: pointer;
+	
+}
+.path-next{
+    font-size: 20px;
+    color: black;
+    position: relative;
+    bottom: 2px;
+}
+/* 폴더나 파일 없을때 */
+.emptyContent{
+	text-align: center;
+	padding-right: 190px;
+}
+.emptyContent img{
+	margin-top: 80px;
+    width: 250px;
+}
+.emptyContent span{
+	font-size: 30px;
+    font-weight: bold;
+}
+
+/* 오른쪽마ㅓ우스 */
+#right-click-form{
+	position: absolute;
+	display: none;
+	z-index: 100;
+	background-color: white;
+    width: 240px;
+    border-radius: 5px;
+    cursor: auto;
+    box-shadow: var(--dt-surface1-shadow,0 1px 2px 0 rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15));
+    border-width: 0;
+    padding-top: 10px;
+}
+#right-click-form li{
+	line-height: 35px;
+	cursor: pointer;
+}
+#right-click-form li span{
+	height: 35px;
+	display: inline-block;
+	margin: 0 10px 0 10px;
+	font-size: 15px;
+}
+#right-click-form li:hover{
+	background-color: var(--dt-primary-container,rgb(232,240,254));
+}
+#right-click-form li:hover>span{
+	font-weight: bold;
+}

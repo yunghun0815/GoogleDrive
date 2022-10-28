@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kosa.google.dao.DriveDao">
+	<insert id="defaultDirectory" parameterType="String">
+		insert into directory
+			(no, title, id, important, upload_date)
+		values(directory_no.nextval, '/', #{id}, 0, sysdate)
+	</insert>
+	<insert id="defaultDrive" parameterType="String">
+		insert into drive
+			(id, max_capacity, use_capacity)
+		values(#{id}, '15630', '0')
+	</insert>
+	<select id="findNo" parameterType="String" resultType="int">
+		select no from directory where id = #{id} and upper_no is null
+	</select>
+	<select id="findTitle" resultType="String" parameterType="int">
+		select title from directory where no = ${upperNo}
+	</select>
+	<insert id="uploadFolder" parameterType="com.kosa.google.model.DirectoryVO">
+		insert into directory
+			(no, title, id, upload_date, important, upper_no)
+		values
+			(directory_no.nextval, #{title}, #{id}, sysdate, 0, ${upperNo})
+	</insert>
+	<select id="titleCheck" resultType="int" parameterType="String">
+		select count(*) from directory where id = #{id} and title = #{title}
+	</select>
+	<select id="findDirectory" resultType="hashmap" parameterType="com.kosa.google.model.DirectoryVO">
+		select title, level, no 
+			from (select * from directory where id = #{id}) 
+			start with title='/' connect by prior no = upper_no  order by  title
+	</select>
+	<insert id="uploadFile" parameterType="com.kosa.google.model.UploadFileVO">
+		insert into upload_file 
+			(file_id, directory_no, file_name, file_size, file_content_type, file_upload_date, file_data, id, important)
+		values
+			(upload_file_no.nextval, #{directoryNo}, #{fileName}, #{fileSize}, #{fileContentType}, sysdate, #{fileData}, #{id}, 0)
+	</insert>
+	<select id="findMyDirectory" resultType="com.kosa.google.model.DirectoryVO" parameterType="map">
+		select no, title, id, upload_date as uploadDate, important, upper_no as upperNo from directory where id = #{id} and upper_no = #{no} 
+	</select>
+	<select id="findMyFile" resultType="com.kosa.google.model.UploadFileVO" parameterType="map">
+		select  file_id fileId, directory_no, file_name fileName, file_size fileSize, file_content_type fileContentType,
+		 file_upload_date fileUploadDate, file_data fileData, id, important from upload_file where id = #{id} and directory_no = #{no}
+	</select>
+	<select id="getFile" resultType="com.kosa.google.model.UploadFileVO">
+		select  file_id fileId, directory_no, file_name fileName, file_size fileSize, file_content_type fileContentType,
+		 file_upload_date fileUploadDate, file_data fileData, id, important from upload_file where file_id = #{fileId}
+	</select>
+	<select id="findPathList" resultType="com.kosa.google.model.DirectoryVO" parameterType="map">	
+		select title, upper_no, no from directory where id = #{id} start with no= #{no} connect by prior upper_no = no order by level desc
+	</select>
+	<select id="findFileImportant" resultType="int" parameterType="map">
+		select important from upload_file where id = #{id} and file_id = #{key}
+	</select>
+	<update id="updateFileImportant" parameterType="map">
+		update upload_file set important = #{important} where id = #{id} and file_id = #{key}
+	</update>
+	<select id="findDirectoryImportant" resultType="int" parameterType="map">
+		select important from directory where id = #{id} and no = #{key}
+	</select>
+	<update id="updateDirectoryImportant" parameterType="map">
+		update directory set important = #{important} where id = #{id} and no = #{key}
+	</update>
+	<select id="uploadFileImportantList" resultType="com.kosa.google.model.UploadFileVO" parameterType="String">
+		select  file_id fileId, directory_no, file_name fileName, file_size fileSize, file_content_type fileContentType,
+		 	file_upload_date fileUploadDate, file_data fileData, id, important 
+		 from upload_file where id = #{id} and important = 1 
+	</select>
+	<select id="directoryImportantList" resultType="com.kosa.google.model.DirectoryVO" parameterType="String">
+		select no, title, id, upload_date as uploadDate, important 
+			from directory where id = #{id} and important = 1
+	</select>
+	<update id="changeFileName" parameterType="map">
+		update upload_file set file_name = #{title} where id = #{id} and file_id = #{key}
+	</update>
+	<update id="changeDirectoryName" parameterType="map">
+		update directory set title = #{title} where id = #{id} and no = #{key}
+	</update>
+</mapper>
